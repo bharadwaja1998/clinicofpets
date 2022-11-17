@@ -38,16 +38,29 @@ pipeline {
             		}
         	}
 
-        stage('Push Image') {
-            steps {
-		withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
-                	sh '''
-                    		docker login --username $USER --password $PASS
-                    		docker push bharadwaja1998/clinicforpets-image:v${BUILD_NUMBER}
-                	'''
+        	stage('Push Image') {
+            		steps {
+				withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                			sh '''
+                    				docker login --username $USER --password $PASS
+                    				docker push bharadwaja1998/clinicforpets-image:v${BUILD_NUMBER}
+                			'''
+				}
+            		}
+        	}
+		stage('Deploy to ubuntu') {
+			steps {
+				sshagent (credentials: ['ubuntu']) {
+    					sh '''
+						ssh -t -t ubuntu@18.118.150.104 << ENDSSH
+						docker pull bharadwaja1998/clinicforpets-image:v${BUILD_NUMBER}
+						docker run -d --name clinicforpets -p 8080:8282 bharadwaja1998/clinicforpets-image:v${BUILD_NUMBER}
+						ENDSSH
+					'''
+  				}
+			}
 		}
-            }
-        }
+			
 
   	}
 	post {
