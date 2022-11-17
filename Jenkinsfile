@@ -32,7 +32,7 @@ pipeline {
 		stage('Build Image') {
                 	steps {
                 		sh '''
-                    			docker build --no-cache -t product-catalog-image:latest .
+                    			docker build --no-cache -t clinicforpets:latest .
                     			docker tag clinicforpets:latest bharadwaja1998/clinicforpets-image:v${BUILD_NUMBER}
                 		'''
             		}
