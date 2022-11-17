@@ -1,8 +1,7 @@
-FROM openjdk:8-jdk-alpine
+FROM tomcat:9.0.69-jdk8-corretto-al2
 
-WORKDIR /app
-COPY ./target/petclinic.war app.jar
+COPY ./target/petclinic.war /usr/local/tomcat/webapps/app.war
 
-EXPOSE 8282
+EXPOSE 8080
 
-CMD ["sh", "-c", "java -jar /app/app.jar "]
+CMD ["catalina.sh", "run"]
