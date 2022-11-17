@@ -27,9 +27,27 @@ pipeline {
         				        junit 'target/surefire-reports/*.xml'
 				        }
     		                }
-
 		        } 
                 }
+		stage('Build Image') {
+                	steps {
+                		sh '''
+                    			docker build --no-cache -t product-catalog-image:latest .
+                    			docker tag clinicforpets:latest bharadwaja1998/clinicforpets-image:v${BUILD_NUMBER}
+                		'''
+            		}
+        	}
+
+        stage('Push Image') {
+            steps {
+		withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'PASS', usernameVariable: 'USER')]) {
+                	sh '''
+                    		docker login --username $USER --password $PASS
+                    		docker push bharadwaja1998/clinicforpets-image:v${BUILD_NUMBER}
+                	'''
+		}
+            }
+        }
 
   	}
 	post {
