@@ -2,12 +2,16 @@ pipeline {
          agent any
          tools {
                    maven 'M3'
+		   jdk 'jdk8'
          }
         
 	stages {
     		stage('Build') 	{
 			steps {
-        			sh 'mvn package'
+        			sh '''
+				java -version
+				mvn clean package
+				'''
 			}
     		}
     		stage('parallel stages') {
