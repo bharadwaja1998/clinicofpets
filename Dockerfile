@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk-alpine
 
-COPY ./target/petclinic.jar app.jar
+COPY ./target/petclinic.war app.jar
 
 EXPOSE 8282
 
