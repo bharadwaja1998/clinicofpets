@@ -52,11 +52,11 @@ pipeline {
 			steps {
 				sshagent (credentials: ['ubuntu']) {
     					sh '''
-						ssh -t -t -o StrictHostKeyChecking=no ubuntu@18.118.150.104 << ENDSSH
-						docker pull bharadwaja1998/clinicforpets-image:v${BUILD_NUMBER}
-						docker run -d --name clinicforpets -p 8080:8282 bharadwaja1998/clinicforpets-image:v${BUILD_NUMBER}
-						ENDSSH
-					'''
+ssh -t -t -o StrictHostKeyChecking=no ubuntu@18.118.150.104 << ENDSSH
+docker pull bharadwaja1998/clinicforpets-image:v${BUILD_NUMBER}
+docker run -d --name clinicforpets-${BUILD_NUMBER} -p 8080:8080 bharadwaja1998/clinicforpets-image:v${BUILD_NUMBER}
+ENDSSH
+'''
   				}
 			}
 		}
